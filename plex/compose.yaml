@@ -1,0 +1,23 @@
+---
+services:
+  plex:
+    container_name: plex
+    image: lscr.io/linuxserver/plex:latest
+    network_mode: bridge
+    ports:
+      - 32400:32400
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    hostname: "thyme"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - VERSION=docker
+    volumes:
+      - /opt/docker/volumes/plex:/config
+      - /mnt/media/media/tv:/tv
+      - /mnt/media/media/movies:/movies
+    restart: unless-stopped

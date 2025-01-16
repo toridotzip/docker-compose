@@ -1,0 +1,37 @@
+---
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /opt/docker/volumes/nextcloud:/config
+      - /mnt/media/nextcloud:/data
+    ports:
+      - 443:443
+    restart: unless-stopped
+
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - /opt/docker/volumes/mariadb:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+
+networks:
+  cloud:
+    driver: bridge
+    name: "cloud"
