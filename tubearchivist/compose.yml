@@ -8,7 +8,7 @@ services:
       - REDIS_HOST=archivist-redis
       - HOST_UID=1000
       - HOST_GID=1000
-      - TA_HOST=192.168.42.10
+      - TA_HOST=192.168.42.10 100.88.78.27
       - TA_USERNAME=admin
       - TA_PASSWORD=${TA_PASSWORD}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}

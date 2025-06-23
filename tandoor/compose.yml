@@ -1,0 +1,43 @@
+services:
+  db_recipes:
+    restart: unless-stopped
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TZ=Europe/Berlin
+    volumes:
+      - /opt/docker/volumes/db_recipes:/var/lib/postgresql/data
+
+  web_recipes:
+    restart: unless-stopped
+    image: vabene1111/recipes
+    container_name: tandoor
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_ENGINE=django.db.backends.postgresql
+      - POSTGRES_HOST=db_recipes
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TZ=Europe/Berlin
+    volumes:
+      - /opt/docker/volumes/tandoor/staticfiles:/opt/recipes/staticfiles
+      - /opt/docker/volumes/tandoor/nginx_config:/opt/recipes/nginx/conf.d
+      - /opt/docker/volumes/tandoor/mediafiles:/opt/recipes/mediafiles
+    depends_on:
+      - db_recipes
+
+  nginx_recipes:
+    restart: unless-stopped
+    image: nginx:mainline-alpine
+    ports:
+      - 8123:80
+    volumes:
+      - /opt/docker/volumes/tandoor/nginx_config:/etc/nginx/conf.d:ro
+      - /opt/docker/volumes/tandoor/staticfiles:/static:ro
+      - /opt/docker/volumes/tandoor/media:/media:ro
+    depends_on:
+      - web_recipes
