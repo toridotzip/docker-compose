@@ -2,6 +2,7 @@ services:
   db_recipes:
     restart: unless-stopped
     image: postgres:16-alpine
+    container_name: tandoor-db
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -24,8 +25,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Europe/Berlin
     volumes:
-      - /opt/docker/volumes/tandoor/staticfiles:/opt/recipes/staticfiles
-      - /opt/docker/volumes/tandoor/nginx_config:/opt/recipes/nginx/conf.d
+      - staticfiles:/opt/recipes/staticfiles
+      - nginx_config:/opt/recipes/nginx/conf.d
       - /opt/docker/volumes/tandoor/mediafiles:/opt/recipes/mediafiles
     depends_on:
       - db_recipes
@@ -33,11 +34,16 @@ services:
   nginx_recipes:
     restart: unless-stopped
     image: nginx:mainline-alpine
+    container_name: tandoor-nginx
     ports:
       - 8123:80
     volumes:
-      - /opt/docker/volumes/tandoor/nginx_config:/etc/nginx/conf.d:ro
-      - /opt/docker/volumes/tandoor/staticfiles:/static:ro
+      - nginx_config:/etc/nginx/conf.d:ro
+      - staticfiles:/static:ro
       - /opt/docker/volumes/tandoor/media:/media:ro
     depends_on:
       - web_recipes
+
+volumes:
+  nginx_config:
+  staticfiles:
