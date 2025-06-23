@@ -40,7 +40,7 @@ services:
     volumes:
       - nginx_config:/etc/nginx/conf.d:ro
       - staticfiles:/static:ro
-      - /opt/docker/volumes/tandoor/media:/media:ro
+      - /opt/docker/volumes/tandoor/mediafiles:/media:ro
     depends_on:
       - web_recipes
 
