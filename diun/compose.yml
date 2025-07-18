@@ -1,0 +1,28 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    hostname: thyme
+    command: serve
+    volumes:
+      - /opt/docker/volumes/diun:/data
+      - ./diun.yml:/diun.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=Europe/Berlin
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    restart: always
+    depends_on: 
+      - signal-cli-rest-api
+
+  signal-cli-rest-api:
+    image: bbernhard/signal-cli-rest-api:latest
+    container_name: signal-cli
+    environment:
+      - MODE=normal
+      - AUTO_RECEIVE_SCHEDULE=0 22 * * *
+    ports:
+      - 8888:8080
+    volumes:
+      - /opt/docker/volumes/signal-cli:/home/.local/share/signal-cli
