@@ -19,6 +19,7 @@ services:
   signal-cli-rest-api:
     image: bbernhard/signal-cli-rest-api:latest
     container_name: signal-cli
+    restart: unless-stopped
     environment:
       - MODE=normal
       - AUTO_RECEIVE_SCHEDULE=0 22 * * *
