@@ -20,4 +20,5 @@ services:
       - /opt/docker/volumes/plex:/config
       - /mnt/media/media/tv:/tv
       - /mnt/media/media/movies:/movies
+      - /mnt/media/media/music:/music
     restart: unless-stopped

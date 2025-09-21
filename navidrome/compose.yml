@@ -1,0 +1,16 @@
+services:
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    ports:
+      - 4533:4533
+    restart: unless-stopped
+    environment:
+      - ND_ENABLEINSIGHTSCOLLECTOR=false
+      - ND_COVERJPEGQUALITY=95
+      - ND_DEFAULTSHAREEXPIRATION=168h
+      - ND_ENABLEFAVOURITES=false
+      - ND_ENABLESTARRATING=false
+    volumes:
+      - /opt/docker/volumes/navidrome
+      - /mnt/media/music:/music:ro
