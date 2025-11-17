@@ -1,4 +1,3 @@
----
 services:
   tubearchivist:
     image: bbilly1/tubearchivist

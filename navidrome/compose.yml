@@ -12,5 +12,5 @@ services:
       - ND_ENABLEFAVOURITES=false
       - ND_ENABLESTARRATING=false
     volumes:
-      - /opt/docker/volumes/navidrome
+      - /opt/docker/volumes/navidrome:/data
       - /mnt/media/music:/music:ro
